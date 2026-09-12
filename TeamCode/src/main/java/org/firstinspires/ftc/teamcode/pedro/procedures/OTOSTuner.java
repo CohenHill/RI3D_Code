@@ -25,7 +25,7 @@ public class OTOSTuner extends Procedure {
 
         Inputs scalar = inputs(
                 "Scalar Identification",
-                "Set the distance you will push your robot forward in inches and the number of full rotations for the angular test"
+                "Set the distance you will push your robot forward in inches and the number of full rotations for the angular Drivetrain"
         );
         Inputs.Field<Double> distance = scalar.d("Distance to push robot").withDefault(48.0);
         Inputs.Field<Integer> turns = scalar.i("Full rotations").withDefault(10);

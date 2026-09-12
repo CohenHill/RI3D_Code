@@ -111,7 +111,7 @@ public class Tests extends Procedure {
                     throw new IllegalArgumentException("Localizer is required for Odometry Test.");
                 completed = runOpMode(new TestsOdometry(drivetrainFunction, localizerFunction));
                 if (!completed)
-                    abort("Failed odometry test. Please check your odometry pods and ensure they are functioning correctly.");
+                    abort("Failed odometry Drivetrain. Please check your odometry pods and ensure they are functioning correctly.");
                 break;
             case POSE:
                 if (!localizer)
