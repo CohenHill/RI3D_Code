@@ -1,11 +1,16 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
+
+import java.util.List;
 
 public class Drivetrain {
 
@@ -13,28 +18,56 @@ public class Drivetrain {
     public DcMotor front_left_drive;
     public DcMotor back_right_drive;
     public DcMotor front_right_drive;
-    public DcMotorEx launch_motor_1;
-    public DcMotorEx launch_motor_2;
-    public DcMotor intake_motor;
-    public Servo franklin_flipper_right;
-    public Servo franklin_flipper_left;
     public Limelight3A limelight;
-    public DistanceSensor pollenDistance;
-    public DistanceSensor nectorDistance;
+    public int tagl = 0;
+    public double cameraHeight = 26.67; //CM
+    public double cameraAngle = 6; //90 minus tilt
+    public double goalHeight = 139.7;
+    public double distance = 0;
 
     public void init(HardwareMap hwMap) {
         back_left_drive = hwMap.get(DcMotor.class, "back_left_drive");
         front_left_drive = hwMap.get(DcMotor.class, "front_left_drive");
         back_right_drive = hwMap.get(DcMotor.class, "back_right_drive");
         front_right_drive = hwMap.get(DcMotor.class, "front_right_drive");
-        launch_motor_1 = hwMap.get(DcMotorEx.class, "launch_motor_1");
-        launch_motor_2 = hwMap.get(DcMotorEx.class, "launch_motor_2");
-        intake_motor = hwMap.get(DcMotor.class, "intake_motor");
-        franklin_flipper_right = hwMap.get(Servo.class, "franklin_flipper_right");
-        franklin_flipper_left = hwMap.get(Servo.class, "franklin_flipper_left");
         limelight = hwMap.get(Limelight3A.class, "limelight");
-        pollenDistance = hwMap.get(DistanceSensor.class, "pollenDistance");
-        nectorDistance = hwMap.get(DistanceSensor.class, "nectorDistance");
+    }
+
+    public void getDistance(){
+        //LLResult llResult = limelight.getLatestResult();
+
+        LLResult llresult = limelight.getLatestResult();
+        List<LLResultTypes.FiducialResult> fiducials = llresult.getFiducialResults();
+        for (LLResultTypes.FiducialResult fiducial : fiducials) {
+            tagl = fiducial.getFiducialId(); // The ID number of the fiducial
+        }
+
+        double ty = llresult.getTy();
+
+        double angleToTarget = cameraAngle + ty;
+        double heightDifference = goalHeight - cameraHeight;
+
+
+        if (tagl > 0) {
+            distance = heightDifference / Math.tan(Math.toRadians(angleToTarget));
+        }
+        else{
+            distance = -1;
+        }
+
+        if(distance > 320){
+            distance = -1;
+        }
+    }
+
+    public double flywheelSpeed(double goalDistance){
+        return Range.clip((2.83362e-7 * Math.pow(goalDistance, 4)) - (0.000325101 * Math.pow(goalDistance, 3)) + (0.135019 * Math.pow(goalDistance, 2)) - (21.20859 * goalDistance) + 2287.47339, 1120, 1550);
+    }
+
+    public void setFlywheelPower(double velocity) {
+        launch_motor_1.setVelocity(velocity);
+        launch_motor_2.setVelocity(velocity);
+        velocity1 = velocity;
     }
 }
 

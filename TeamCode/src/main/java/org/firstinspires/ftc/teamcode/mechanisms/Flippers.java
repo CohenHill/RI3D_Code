@@ -1,40 +1,56 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
-import com.qualcomm.hardware.limelightvision.Limelight3A;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Flippers {
 
-    public DcMotor back_left_drive;
-    public DcMotor front_left_drive;
-    public DcMotor back_right_drive;
-    public DcMotor front_right_drive;
-    public DcMotorEx launch_motor_1;
-    public DcMotorEx launch_motor_2;
-    public DcMotor intake_motor;
-    public Servo franklin_flipper_right;
-    public Servo franklin_flipper_left;
-    public Limelight3A limelight;
+    public Servo pollenFlipper;
+    public Servo nectorFlipper;
     public DistanceSensor pollenDistance;
     public DistanceSensor nectorDistance;
 
+    public double pollenD;
+    public double nectorD;
+
+    ElapsedTime sleeptime = new ElapsedTime();
+
     public void init(HardwareMap hwMap) {
-        back_left_drive = hwMap.get(DcMotor.class, "back_left_drive");
-        front_left_drive = hwMap.get(DcMotor.class, "front_left_drive");
-        back_right_drive = hwMap.get(DcMotor.class, "back_right_drive");
-        front_right_drive = hwMap.get(DcMotor.class, "front_right_drive");
-        launch_motor_1 = hwMap.get(DcMotorEx.class, "launch_motor_1");
-        launch_motor_2 = hwMap.get(DcMotorEx.class, "launch_motor_2");
-        intake_motor = hwMap.get(DcMotor.class, "intake_motor");
-        franklin_flipper_right = hwMap.get(Servo.class, "franklin_flipper_right");
-        franklin_flipper_left = hwMap.get(Servo.class, "franklin_flipper_left");
-        limelight = hwMap.get(Limelight3A.class, "limelight");
+        pollenFlipper = hwMap.get(Servo.class, "franklin_flipper_right");
+        nectorFlipper = hwMap.get(Servo.class, "franklin_flipper_left");
+
         pollenDistance = hwMap.get(DistanceSensor.class, "pollenDistance");
         nectorDistance = hwMap.get(DistanceSensor.class, "nectorDistance");
+    }
+
+    public void checkDistanceFlip () {
+        pollenD = pollenDistance.getDistance(DistanceUnit.MM);
+        nectorD = nectorDistance.getDistance(DistanceUnit.MM);
+    }
+
+    public void flip() {
+        checkDistanceFlip();
+        if(pollenD < 100){
+            pollenFlipper.setPosition(0.11);
+            sleep(500);
+            pollenFlipper.setPosition(0.44);
+        }
+        else if(nectorD < 100){
+            nectorFlipper.setPosition(1);
+            sleep(500);
+            nectorFlipper.setPosition(0.64);
+        }
+    }
+
+    public void sleep(double time) {
+        sleeptime.reset();
+        while (sleeptime.milliseconds() <= time) {
+
+        }
     }
 }
 
