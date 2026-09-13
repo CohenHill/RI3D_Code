@@ -18,6 +18,19 @@ public class Flywheels {
     private double output1, output2;
 
     private double targetVelocity1, targetVelocity2;
+    private static final double MAX_RPM = 6000.0;
+
+    private static final double POLLEN_PERCENT = 0.80 * MAX_RPM;   // 80%
+    private static final double NECTAR_PERCENT = 0.55 * MAX_RPM;   // 55%
+
+    private static final double POLLEN_RPM = MAX_RPM * POLLEN_PERCENT;   // 4800
+    private static final double NECTAR_RPM = MAX_RPM * NECTAR_PERCENT;   // 3300
+    private enum FlywheelState {
+        POLLEN,
+        NECTAR,
+        STOPPED
+    }
+    private FlywheelState flywheelState = FlywheelState.STOPPED;
 
     public void init(HardwareMap hwMap) {
         launch_motor_1 = hwMap.get(DcMotorEx.class, "launch_motor_1");
@@ -36,8 +49,27 @@ public class Flywheels {
     }
 
     public void Loop(){
-        flywheelController1.setSetpoint(targetVelocity1);
-        flywheelController2.setSetpoint(targetVelocity2);
+        switch (flywheelState) {
+            case POLLEN:
+                targetVelocity1 = POLLEN_RPM;
+                targetVelocity2 = POLLEN_RPM;
+                flywheelController1.setSetpoint(targetVelocity1);
+                flywheelController2.setSetpoint(targetVelocity2);
+                break;
+            case NECTAR:
+                targetVelocity1 = NECTAR_RPM;
+                targetVelocity2 = NECTAR_RPM;
+                flywheelController1.setSetpoint(targetVelocity1);
+                flywheelController2.setSetpoint(targetVelocity2);
+                break;
+            case STOPPED:
+            default:
+                targetVelocity1 = 0;
+                targetVelocity2 = 0;
+                flywheelController1.setSetpoint(targetVelocity1);
+                flywheelController2.setSetpoint(targetVelocity2);
+                break;
+        }
 
         flywheelController1.update(currentVelocity1);
         flywheelController2.update(currentVelocity2);
