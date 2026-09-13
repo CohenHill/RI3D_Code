@@ -9,18 +9,17 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class config {
 
-    Drivetrain drivetrain = new Drivetrain();
-    Intake intake = new Intake();
-    Flywheels flywheels = new Flywheels();
-    Flippers flippers = new Flippers();
+    public Drivetrain drivetrain = new Drivetrain();
+    public Intake intake = new Intake();
+    public Flywheels flywheels = new Flywheels();
+    public Flippers flippers = new Flippers();
 
     public void init(HardwareMap hwMap) {
         drivetrain.init(hwMap);
         intake.init(hwMap);
         flywheels.init(hwMap);
         flippers.init(hwMap);
-
-
     }
+
 }
 

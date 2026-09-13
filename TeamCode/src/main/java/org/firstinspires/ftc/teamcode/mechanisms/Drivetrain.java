@@ -24,6 +24,8 @@ public class Drivetrain {
     public double cameraAngle = 6; //90 minus tilt
     public double goalHeight = 139.7;
     public double distance = 0;
+    public double id = 0;
+    public double maxPower;
 
     public void init(HardwareMap hwMap) {
         back_left_drive = hwMap.get(DcMotor.class, "back_left_drive");
@@ -51,17 +53,32 @@ public class Drivetrain {
         if (tagl > 0) {
             distance = heightDifference / Math.tan(Math.toRadians(angleToTarget));
         }
-        else{
-            distance = -1;
-        }
+    }
 
-        if(distance > 320){
-            distance = -1;
+    public void ReadTag() {
+        LLResult llresult = limelight.getLatestResult();
+        List<LLResultTypes.FiducialResult> fiducials = llresult.getFiducialResults();
+        for (LLResultTypes.FiducialResult fiducial : fiducials) {
+            id = fiducial.getFiducialId(); // The ID number of the fiducial
         }
     }
 
-    public double flywheelSpeed(double goalDistance){
-        return Range.clip((2.83362e-7 * Math.pow(goalDistance, 4)) - (0.000325101 * Math.pow(goalDistance, 3)) + (0.135019 * Math.pow(goalDistance, 2)) - (21.20859 * goalDistance) + 2287.47339, 1120, 1550);
+    public void drive(double forward, double strafe, double rotate) {
+        double front_left_power = forward + strafe - rotate;
+        double front_right_power = forward - strafe + rotate;
+        double back_right_power = forward + strafe + rotate;
+        double back_left_power = forward - strafe - rotate;
+
+        maxPower = 1;
+        maxPower = Math.max(maxPower, Math.abs(front_left_power));
+        maxPower = Math.max(maxPower, Math.abs(front_right_power));
+        maxPower = Math.max(maxPower, Math.abs(back_right_power));
+        maxPower = Math.max(maxPower, Math.abs(back_left_power));
+
+        front_left_drive.setPower(front_left_power / maxPower);
+        back_left_drive.setPower(back_left_power / maxPower);
+        front_right_drive.setPower(front_right_power / maxPower);
+        back_right_drive.setPower(back_right_power / maxPower);
     }
 }
 

@@ -12,7 +12,7 @@ public class Intake {
     public void init(HardwareMap hwMap) {
         intake_motor = hwMap.get(DcMotor.class, "intake_motor");
     }
-    private enum IntakeState {
+    public enum IntakeState {
         ACTIVE,
         PASSIVE,
         STOPPED
@@ -30,6 +30,10 @@ public class Intake {
                 intake_motor.setPower(stoppedPower);
                 break;
         }
+    }
+
+    public void setIntakeState(IntakeState newState){
+        intakeState = newState;
     }
 
 }
