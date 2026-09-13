@@ -27,22 +27,34 @@ public class twoFlowerPath extends LinearOpMode {
             while (opModeIsActive() && follower.isBusy()) {
                 follower.update();
             }
-
+            sleep(2000);
             // 2. Go to Flower 1
             follower.follow(twoFlower.flower1());
             while (opModeIsActive() && follower.isBusy()) {
                 follower.update();
             }
-
-            // 3. Launch from Flower 1
-            follower.follow(twoFlower.launchFlower1());
+            sleep(500);
+            // 3. Keep going lol
+            follower.follow(twoFlower.turn1());
             while (opModeIsActive() && follower.isBusy()) {
                 follower.update();
             }
 
+            // 3.5 Launch from Flower 1
+            follower.follow(twoFlower.launchFlower1());
+            while (opModeIsActive() && follower.isBusy()) {
+                follower.update();
+            }
+            sleep(2000);
             // 4. Go to Flower 2
             follower.follow(twoFlower.path4());
             while (opModeIsActive() && follower.isBusy()) {
+                follower.update();
+            }
+            sleep(500);
+            //turn again
+            follower.follow(twoFlower.turn2());
+            while (opModeIsActive() && follower.isBusy()){
                 follower.update();
             }
 
@@ -51,7 +63,7 @@ public class twoFlowerPath extends LinearOpMode {
             while (opModeIsActive() && follower.isBusy()) {
                 follower.update();
             }
-
+            sleep(2000);
             // 6. Park
             follower.follow(twoFlower.path6());
             while (opModeIsActive() && follower.isBusy()) {
