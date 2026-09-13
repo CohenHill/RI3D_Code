@@ -63,11 +63,5 @@ public class Drivetrain {
     public double flywheelSpeed(double goalDistance){
         return Range.clip((2.83362e-7 * Math.pow(goalDistance, 4)) - (0.000325101 * Math.pow(goalDistance, 3)) + (0.135019 * Math.pow(goalDistance, 2)) - (21.20859 * goalDistance) + 2287.47339, 1120, 1550);
     }
-
-    public void setFlywheelPower(double velocity) {
-        launch_motor_1.setVelocity(velocity);
-        launch_motor_2.setVelocity(velocity);
-        velocity1 = velocity;
-    }
 }
 
