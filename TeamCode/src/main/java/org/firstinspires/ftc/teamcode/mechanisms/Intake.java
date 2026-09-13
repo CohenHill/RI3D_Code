@@ -1,20 +1,36 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
-import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 public class Intake {
 
     public DcMotor intake_motor;
-
+    private double activePower = 1.0;
+    private double passivePower = 0.3;
+    private double stoppedPower = 0.0;
     public void init(HardwareMap hwMap) {
         intake_motor = hwMap.get(DcMotor.class, "intake_motor");
     }
-
+    private enum IntakeState {
+        ACTIVE,
+        PASSIVE,
+        STOPPED
+    }
+    private IntakeState intakeState = IntakeState.STOPPED;
+    public void Loop(){
+        switch(intakeState){
+            case ACTIVE:
+                intake_motor.setPower(activePower);
+                break;
+            case PASSIVE:
+                intake_motor.setPower(passivePower);
+                break;
+            case STOPPED:
+                intake_motor.setPower(stoppedPower);
+                break;
+        }
+    }
 
 }
 
