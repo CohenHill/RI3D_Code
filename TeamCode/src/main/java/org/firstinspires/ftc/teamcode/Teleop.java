@@ -56,13 +56,17 @@ public class Teleop extends OpMode {
         }
 
         if (gamepad1.a){
-            conf.flywheels.setPollenPercent();
+            //conf.flywheels.setPollenPercent();
+            conf.flywheels.launch_motor_1.setPower(.75);
+            conf.flywheels.launch_motor_2.setPower(.79);
             telemetry.addLine("Flywheel Pollen");
             telemetry.addData("Pollen V1", conf.flywheels.launch_motor_1.getVelocity());
             telemetry.addData("Pollen V2", conf.flywheels.launch_motor_2.getVelocity());
         }
         if (gamepad1.x){
-            conf.flywheels.setNectarPercent();
+            //conf.flywheels.setNectarPercent();
+            conf.flywheels.launch_motor_1.setPower(.48);
+            conf.flywheels.launch_motor_2.setPower(.52);
             telemetry.addLine("Flywheel nectar");
             telemetry.addData("Nector V1", conf.flywheels.launch_motor_1.getVelocity());
             telemetry.addData("Nector V2", conf.flywheels.launch_motor_2.getVelocity());
