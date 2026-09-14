@@ -31,17 +31,22 @@ public class Teleop extends OpMode {
         conf.drivetrain.limelight.start();
 
     }
-
+    
     @Override
     public void loop() {
         forward = -gamepad1.left_stick_y;
         strafe = gamepad1.left_stick_x;
-        rotate = gamepad1.right_stick_x;
+        rotate = -gamepad1.right_stick_x;
 
         if(gamepad1.right_trigger > 0.5){
-            conf.flippers.flip();
+            conf.flippers.flipper.setPosition(0.9);
             telemetry.addLine("flipping");
         }
+        else{
+            conf.flippers.flipper.setPosition(0.6);
+            telemetry.addLine("not flipping");
+        }
+
         if(gamepad1.left_trigger > 0.5){
             conf.intake.setIntakeState(Intake.IntakeState.ACTIVE);
             telemetry.addLine("intake Active");
@@ -53,10 +58,14 @@ public class Teleop extends OpMode {
         if (gamepad1.a){
             conf.flywheels.setPollenPercent();
             telemetry.addLine("Flywheel Pollen");
+            telemetry.addData("Pollen V1", conf.flywheels.launch_motor_1.getVelocity());
+            telemetry.addData("Pollen V2", conf.flywheels.launch_motor_2.getVelocity());
         }
         if (gamepad1.x){
             conf.flywheels.setNectarPercent();
             telemetry.addLine("Flywheel nectar");
+            telemetry.addData("Nector V1", conf.flywheels.launch_motor_1.getVelocity());
+            telemetry.addData("Nector V2", conf.flywheels.launch_motor_2.getVelocity());
         }
         if (gamepad1.b){
 //            conf.flywheels.setTargetVelocity(0,0);

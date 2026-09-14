@@ -43,7 +43,7 @@ public class Flippers {
         if(distanceFlipSaved < 5){
             flywheels.setTargetVelocity(1500,1500);
         }
-        else if( distanceFlipSaved < 2.5){
+        else if(distanceFlipSaved < 2.5){
             flywheels.setTargetVelocity(1500,1500);
         }
     }
