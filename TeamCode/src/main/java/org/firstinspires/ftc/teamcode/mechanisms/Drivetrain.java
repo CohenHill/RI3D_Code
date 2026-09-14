@@ -4,11 +4,8 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 import java.util.List;
 
@@ -28,10 +25,14 @@ public class Drivetrain {
     public double maxPower;
 
     public void init(HardwareMap hwMap) {
-        back_left_drive = hwMap.get(DcMotor.class, "back_left_drive");
-        front_left_drive = hwMap.get(DcMotor.class, "front_left_drive");
-        back_right_drive = hwMap.get(DcMotor.class, "back_right_drive");
-        front_right_drive = hwMap.get(DcMotor.class, "front_right_drive");
+        back_left_drive = hwMap.get(DcMotor.class, "leftBack");
+        front_left_drive = hwMap.get(DcMotor.class, "leftFront");
+        back_right_drive = hwMap.get(DcMotor.class, "rightBack");
+        front_right_drive = hwMap.get(DcMotor.class, "rightFront");
+        back_left_drive.setDirection(DcMotorSimple.Direction.REVERSE);
+        front_left_drive.setDirection(DcMotorSimple.Direction.REVERSE);
+        back_right_drive.setDirection(DcMotorSimple.Direction.FORWARD);
+        front_right_drive.setDirection(DcMotorSimple.Direction.FORWARD);
         limelight = hwMap.get(Limelight3A.class, "limelight");
     }
 

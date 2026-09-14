@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Intake {
 
     public DcMotor intake_motor;
-    private double activePower = 1.0;
+    private double activePower = .7;
     private double passivePower = 0.3;
     private double stoppedPower = 0.0;
     public void init(HardwareMap hwMap) {

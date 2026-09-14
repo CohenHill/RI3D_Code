@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.mechanisms.config;
 import org.firstinspires.ftc.teamcode.mechanisms.Flippers;
 import org.firstinspires.ftc.teamcode.mechanisms.Intake;
@@ -39,11 +40,33 @@ public class Teleop extends OpMode {
 
         if(gamepad1.right_trigger > 0.5){
             conf.flippers.flip();
+            telemetry.addLine("flipping");
         }
         if(gamepad1.left_trigger > 0.5){
             conf.intake.setIntakeState(Intake.IntakeState.ACTIVE);
+            telemetry.addLine("intake Active");
+        } else {
+            conf.intake.setIntakeState(Intake.IntakeState.STOPPED);
+            telemetry.addLine("intake Stopped");
         }
 
+        if (gamepad1.a){
+            conf.flywheels.setPollenPercent();
+            telemetry.addLine("Flywheel Pollen");
+        }
+        if (gamepad1.x){
+            conf.flywheels.setNectarPercent();
+            telemetry.addLine("Flywheel nectar");
+        }
+        if (gamepad1.b){
+//            conf.flywheels.setTargetVelocity(0,0);
+            conf.flywheels.setPowerZero();
+            telemetry.addLine("Flywheel Off");
+        }
+
+        conf.flywheels.Read();
+        conf.flywheels.Loop();
+        conf.flywheels.Write();
 
         conf.drivetrain.drive(forward, strafe, rotate);
 
